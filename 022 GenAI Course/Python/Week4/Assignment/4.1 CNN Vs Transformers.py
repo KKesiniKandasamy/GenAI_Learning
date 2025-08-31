@@ -160,3 +160,46 @@ def create_vit_model(input_shape, num_classes, patch_size=4, num_heads=4, num_la
 vit_model = create_vit_model(input_shape, num_classes)
 vit_model.compile(optimizer=Adam(learning_rate=1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
 vit_model.summary()
+
+# Task 8: Train the ViT model using the CIFAR-10 dataset
+# Train the model using the training dataset with an appropriate number of training epochs
+print("TASK 8: Training ViT Model...")
+early_stopping_vit = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+start_time_vit = time.time()
+vit_history = vit_model.fit(x_train, y_train, epochs=50, batch_size=64, validation_data=(x_val, y_val), callbacks=[early_stopping_vit])
+end_time_vit = time.time()
+print(f"ViT Training Time: {end_time_vit - start_time_vit:.2f} seconds")
+# Evaluate the model on the test dataset
+vit_test_loss, vit_test_acc = vit_model.evaluate(x_test, y_test)
+print(f"ViT Test Accuracy: {vit_test_acc:.4f}")
+# Plot training & validation accuracy and loss values
+plot_training_history(vit_history, "ViT")
+# Task 9: Display model architecture and training progress
+# Display the model architecture and training progress (take a screenshot of the progress for each epoch)
+print("Task 9: Display model architecture and training progress")
+vit_model.summary()
+# Task 10: Compare training and validation results for each model
+# Discuss the difference in performance, training efficiency and learning dynamics or learning patterns of each model
+print("Task 10: Compare training and validation results for each model")
+print("CNN Test Accuracy:", cnn_test_acc)
+print("ViT Test Accuracy:", vit_test_acc)
+print(f"CNN Training Time: {end_time - start_time:.2f} seconds")
+print(f"ViT Training Time: {end_time_vit - start_time_vit:.2f} seconds")
+# Generate classification reports and confusion matrices for both models
+cnn_y_pred = np.argmax(cnn_model.predict(x_test), axis=1)
+vit_y_pred = np.argmax(vit_model.predict(x_test), axis=1)
+y_true = np.argmax(y_test, axis=1)
+print("CNN Classification Report:")
+print(classification_report(y_true, cnn_y_pred, target_names=class_names))
+print("ViT Classification Report:")
+print(classification_report(y_true, vit_y_pred, target_names=class_names))
+def plot_confusion_matrix(y_true, y_pred, class_names, title):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=True, fmt='d', xticklabels=class_names, yticklabels=class_names, cmap='Blues')
+    plt.title(f'{title} Confusion Matrix')
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.show()  
+plot_confusion_matrix(y_true, cnn_y_pred, class_names, "CNN")
+plot_confusion_matrix(y_true, vit_y_pred, class_names, "ViT")   
