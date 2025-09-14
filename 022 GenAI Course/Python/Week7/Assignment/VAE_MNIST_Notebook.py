@@ -137,3 +137,17 @@ for i in range(10):
     plt.axis('off')
 plt.tight_layout()
 plt.show()
+
+# Task 1 Visualize the latent space 
+
+print("\nVisualizing the latent space...")
+z_mean, _, _ = encoder.predict(x_train, batch_size=batch_size)
+plt.figure(figsize=(6, 6))
+colors = np.arange(len(z_mean)) % 10
+plt.scatter(z_mean[:, 0], z_mean[:, 1], c=colors, cmap='tab10', alpha=0.7, s=3)
+
+plt.xlabel("z[0]")
+plt.ylabel("z[1]")
+plt.title("Latent Space Visualization")
+plt.show()
+
