@@ -1,5 +1,7 @@
 #  Train, and evaluate two neural network architectures (basic and advanced Transformer models), and compare their performance on sentiment classification using appropriate metrics.
+# ===============================================================================================
 # Task 1: Utilise Libraries/Dataset
+# ===============================================================================================
 # Import the necessary libraries (TensorFlow, datasets, Keras, pandas, Matplotlib, sklearn, etc.)
 import tensorflow as tf
 from tensorflow import keras
@@ -34,7 +36,9 @@ print ("========================================================================
 print(f"Training samples: {len(df)}")
 print(f"Testing samples: {len(dataset['test'])}")
 
+# ===============================================================================================
 # Task 2: Data Processing and Exploration
+# ===============================================================================================
 # Generate two EDA visualisations (e.g., review length distribution, class distribution)
 print ("==============================================================================")
 print("Task 2: Data Processing and Exploration...")
@@ -94,7 +98,9 @@ print ("========================================================================
 print("Task 2: Data processing complete.")
 print ("==============================================================================")
 
+# ===============================================================================================
 # Task 3: Construct a basic Transformer model
+# ===============================================================================================
 # Construct a basic transformer model with appropriate layers (Embedding, TransformerEncoder, GlobalAveragePooling1D, Dense)
 print ("==============================================================================")
 print("Task 3: Constructing a basic Transformer model...")
@@ -130,3 +136,168 @@ outputs = layers.Dense(1, activation="sigmoid")(dropout_layer)
 basic_transformer_model = keras.Model(inputs=inputs, outputs=outputs)
 basic_transformer_model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 basic_transformer_model.summary()
+
+# ===============================================================================================
+# Task 4: Train the basic model
+# ===============================================================================================
+# Train the model on the IMDB training data for 5 epochs using binary_crossentropy
+print ("==============================================================================")
+print("Task 4: Training the basic Transformer model...")
+print ("==============================================================================")
+history_basic = basic_transformer_model.fit(X_train, y_train, epochs=5, batch_size=32, validation_data=(X_val, y_val))
+print ("==============================================================================")
+print("Task 4: Basic Transformer model training complete.")
+print ("==============================================================================")
+
+# ===============================================================================================
+# Task 5: Display model architecture and training progress
+# ===============================================================================================
+# Display model architecture and plot training performance (accuracy, loss)
+print ("==============================================================================")
+print("Task 5: Displaying model architecture and training performance...")
+print ("==============================================================================")
+# Plot training & validation accuracy values
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(history_basic.history['accuracy'])
+plt.plot(history_basic.history['val_accuracy'])
+plt.title('Basic Transformer Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+# Plot training & validation loss values
+plt.subplot(1, 2, 2)
+plt.plot(history_basic.history['loss'])
+plt.plot(history_basic.history['val_loss'])
+plt.title('Basic Transformer Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+print ("==============================================================================")
+print("Task 5: Model architecture and training performance displayed.")
+print ("==============================================================================")
+
+# ===============================================================================================
+# Task 6: Construct an advanced transformer model
+# ===============================================================================================
+#  Implement a custom positional encoding layer &  Use a Transformer block with multi-head attention (num_heads ≥ 4) and Dropout
+print ("==============================================================================")
+print("Task 6: Constructing an advanced Transformer model...")
+print ("==============================================================================")
+class PositionalEncoding(layers.Layer):
+    def __init__(self, max_len, embed_dim):
+        super(PositionalEncoding, self).__init__()
+        self.pos_encoding = self.positional_encoding(max_len, embed_dim)
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'pos_encoding': self.pos_encoding,
+        })
+        return config
+
+    def positional_encoding(self, max_len, embed_dim):
+        angle_rads = self.get_angles(np.arange(max_len)[:, np.newaxis], np.arange(embed_dim)[np.newaxis, :], embed_dim)
+        angle_rads[:, 0::2] = np.sin(angle_rads[:, 0::2])
+        angle_rads[:, 1::2] = np.cos(angle_rads[:, 1::2])
+        pos_encoding = angle_rads[np.newaxis, ...]
+        return tf.cast(pos_encoding, dtype=tf.float32)
+
+    def get_angles(self, pos, i, embed_dim):
+        angle_rates = 1 / np.power(10000, (2 * (i // 2)) / np.float32(embed_dim))
+        return pos * angle_rates
+
+    def call(self, inputs):
+        return inputs + self.pos_encoding[:, :tf.shape(inputs)[1], :]
+embed_dim_adv = 64  # Embedding size for each token
+num_heads_adv = 4  # Number of attention heads
+ff_dim_adv = 128  # Hidden layer size in feed forward network inside transformer
+inputs_adv = layers.Input(shape=(max_len,))
+embedding_layer_adv = layers.Embedding(input_dim=max_words, output_dim=embed_dim_adv)(inputs_adv)
+pos_encoding_layer = PositionalEncoding(max_len, embed_dim_adv)(embedding_layer_adv)
+transformer_block_adv = TransformerBlock(embed_dim_adv, num_heads_adv, ff_dim_adv, rate=0.2)(pos_encoding_layer)
+pooling_layer_adv = layers.GlobalAveragePooling1D()(transformer_block_adv)
+dropout_layer_adv = layers.Dropout(0.2)(pooling_layer_adv)
+outputs_adv = layers.Dense(1, activation="sigmoid")(dropout_layer_adv)
+advanced_transformer_model = keras.Model(inputs=inputs_adv, outputs=outputs_adv)
+advanced_transformer_model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+advanced_transformer_model.summary()
+
+# ===============================================================================================
+# Task 7: Train the advanced model
+# ===============================================================================================
+# Train the enhanced model and display the training curves and model summary
+print ("==============================================================================")
+print("Task 7: Training the advanced Transformer model...")
+print ("==============================================================================")
+history_advanced = advanced_transformer_model.fit(X_train, y_train, epochs=5, batch_size=32, validation_data=(X_val, y_val))
+# Display model summary
+advanced_transformer_model.summary()
+
+print ("==============================================================================")    
+print("Task 7: Advanced Transformer model training complete.")
+print ("==============================================================================")
+
+# ===============================================================================================
+# Task 8: Display model architecture and training progress
+# ===============================================================================================
+# Display model architecture and plot training performance (accuracy, loss)
+print ("==============================================================================")
+print("Task 8: Displaying advanced model architecture and training performance...")
+print ("==============================================================================")
+# Plot training & validation accuracy values
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(history_advanced.history['accuracy'])
+plt.plot(history_advanced.history['val_accuracy'])
+plt.title('Advanced Transformer Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+# Plot training & validation loss values
+plt.subplot(1, 2, 2)
+plt.plot(history_advanced.history['loss'])
+plt.plot(history_advanced.history['val_loss'])
+plt.title('Advanced Transformer Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+print ("==============================================================================")
+print("Task 8: Advanced model architecture and training performance displayed.")
+print ("==============================================================================")
+
+# ===============================================================================================
+# Task 9: Compare training and validation results for each model
+# ===============================================================================================
+# Evaluate both models using Accuracy, Precision, Recall, F1-score and AUC-ROC
+print ("==============================================================================")
+print("Task 9: Comparing training and validation results for both models...")
+print ("==============================================================================")
+# Evaluate basic model
+y_val_pred_basic = (basic_transformer_model.predict(X_val) > 0.5).astype("int32")
+print("Basic Transformer Model Classification Report:")
+print(classification_report(y_val, y_val_pred_basic))
+# Evaluate advanced model
+y_val_pred_advanced = (advanced_transformer_model.predict(X_val) > 0.5).astype("int32")
+print("Advanced Transformer Model Classification Report:")
+print(classification_report(y_val, y_val_pred_advanced))
+# Plot confusion matrices
+conf_matrix_basic = confusion_matrix(y_val, y_val_pred_basic)
+conf_matrix_advanced = confusion_matrix(y_val, y_val_pred_advanced)
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+sns.heatmap(conf_matrix_basic, annot=True, fmt='d', cmap='Blues')
+plt.title('Basic Transformer Model Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.subplot(1, 2, 2)
+sns.heatmap(conf_matrix_advanced, annot=True, fmt='d', cmap='Greens')
+plt.title('Advanced Transformer Model Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+print ("==============================================================================")
+print("Task 9: Comparison complete.")
+print ("==============================================================================")

@@ -1,6 +1,8 @@
 # Create a Python notebook to implement, train, and evaluate these
 # two neural network architectures utilising the CIFAR-10 dataset. 
+############################################################################################
 # Task 1: Utilise Libraries/Dataset 
+############################################################################################
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -32,7 +34,9 @@ x_val = preprocess_input(x_val)
 x_test = preprocess_input(x_test)
 input_shape = x_train.shape[1:]
 
+############################################################################################
 # Task 2: Generate at least two EDA visualisations
+############################################################################################
 # Visualize some sample images from the dataset
 def plot_sample_images(x, y, class_names):
     plt.figure(figsize=(10, 10))
@@ -55,7 +59,9 @@ def plot_class_distribution(y, class_names):
     plt.show()
 plot_class_distribution(y_train, class_names)
 
+############################################################################################
 # Task 3: Analyse data quality
+############################################################################################
 # Check for missing values or outliers and data quality issues
 def analyze_data_quality(x, y):
     print("Training data shape:", x.shape)
@@ -65,7 +71,9 @@ def analyze_data_quality(x, y):
     print("Checking for NaN values in labels:", np.isnan(y).any())
 analyze_data_quality(x_train, y_train)
 
+############################################################################################
 # Task 4: Construct a CNN model
+############################################################################################
 # Construct a CNN model with appropriate layers (convolutional, pooling, fully connected) 
 def create_cnn_model(input_shape, num_classes):
     model = models.Sequential()
@@ -84,7 +92,9 @@ cnn_model = create_cnn_model(input_shape, num_classes)
 cnn_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 cnn_model.summary()
 
+############################################################################################
 # Task 5: Train the CNN model using the CIFAR-10 dataset
+############################################################################################
 # Train the model using the training dataset with an appropriate number of training epochs
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 start_time = time.time()
@@ -114,11 +124,18 @@ def plot_training_history(history, title):
     plt.show()
 plot_training_history(cnn_history, "CNN")
 
+############################################################################################
 # Task 6: Display model architecture and training progress
+############################################################################################
 # Display the model architecture and training progress (take a screenshot of the progress for each epoch)
+print("Task 6: Display model architecture and training progress. Epochs completed:", len(cnn_history.history['loss']))
 cnn_model.summary()
+print("Task 6: Display model architecture and training progress completed")
 
+
+############################################################################################
 # Task 7: Construct a ViT model
+############################################################################################
 # Implement a Vision Transformer (ViT) model with attention mechanisms 
 def create_vit_model(input_shape, num_classes, patch_size=4, num_heads=4, num_layers=8, dff=128, dropout_rate=0.1):
     inputs = Input(shape=input_shape)
@@ -161,7 +178,9 @@ vit_model = create_vit_model(input_shape, num_classes)
 vit_model.compile(optimizer=Adam(learning_rate=1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
 vit_model.summary()
 
+############################################################################################
 # Task 8: Train the ViT model using the CIFAR-10 dataset
+############################################################################################
 # Train the model using the training dataset with an appropriate number of training epochs
 print("TASK 8: Training ViT Model...")
 early_stopping_vit = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
@@ -174,11 +193,18 @@ vit_test_loss, vit_test_acc = vit_model.evaluate(x_test, y_test)
 print(f"ViT Test Accuracy: {vit_test_acc:.4f}")
 # Plot training & validation accuracy and loss values
 plot_training_history(vit_history, "ViT")
+
+############################################################################################
 # Task 9: Display model architecture and training progress
+############################################################################################
 # Display the model architecture and training progress (take a screenshot of the progress for each epoch)
 print("Task 9: Display model architecture and training progress")
 vit_model.summary()
+
+############################################################################################
 # Task 10: Compare training and validation results for each model
+############################################################################################
+
 # Discuss the difference in performance, training efficiency and learning dynamics or learning patterns of each model
 print("Task 10: Compare training and validation results for each model")
 print("CNN Test Accuracy:", cnn_test_acc)
