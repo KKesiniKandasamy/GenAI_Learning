@@ -1,0 +1,5 @@
+ Epoch: 1. Mean Return: 23.121387283236995. Mean Length: 23.121387283236995
+ Epoch: 2. Mean Return: 27.397260273972602. Mean Length: 27.397260273972602
+ Epoch: 3. Mean Return: 40.0. Mean Length: 40.0
+ Epoch: 4. Mean Return: 62.5. Mean Length: 62.5
+ Epoch: 5. Mean Return: 111.11111111111111. Mean Length: 111.11111111111111
