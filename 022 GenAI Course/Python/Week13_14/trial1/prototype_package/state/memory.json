@@ -1,0 +1,50 @@
+[
+  {
+    "role": "user",
+    "text": "a red kite flying over mountains at sunset"
+  },
+  {
+    "role": "assistant",
+    "text": "From agile.txt: Agile Project Management is an iterative approach to delivering a project throughout its lifecycle. Iterative development, frequent reassessment, and adaptive planning are core tenants. Agile emphasizes collaboration, customer feedback, and small, rapid releases. Common frameworks include Scrum and Kanban....\nFrom pm_basics.txt: Program management coordinates multiple related projects to achieve strategic objectives. It includes governance, stakeholder management, benefits realization, and alignment with organizational goals. Program managers focus on outcomes rather than outputs....\nFrom productivity_books.txt: 'Deep Work' by Cal Newport advocates focus and distraction-free work. 'Atomic Habits' by James Clear covers habit formation and incremental improvement. 'Getting Things Done' by David Allen is a practical workflow system....\n\n(Answer synthesized from documents.)"
+  },
+  {
+    "role": "user",
+    "text": "what's the weather in Tokyo?"
+  },
+  {
+    "role": "assistant",
+    "text": "Mock weather for Tokyo?: 22°C, clear skies. (Set OPENWEATHER_API_KEY to enable real data)"
+  },
+  {
+    "role": "user",
+    "text": "select * from products where price < 100"
+  },
+  {
+    "role": "assistant",
+    "text": "(1, 'Blue Notebook', 4.99, 'stationery')\n(3, 'Ceramic Mug', 12.5, 'kitchen')"
+  },
+  {
+    "role": "user",
+    "text": "productivity books"
+  },
+  {
+    "role": "assistant",
+    "text": "From agile.txt: Agile Project Management is an iterative approach to delivering a project throughout its lifecycle. Iterative development, frequent reassessment, and adaptive planning are core tenants. Agile emphasizes collaboration, customer feedback, and small, rapid releases. Common frameworks include Scrum and Kanban....\nFrom pm_basics.txt: Program management coordinates multiple related projects to achieve strategic objectives. It includes governance, stakeholder management, benefits realization, and alignment with organizational goals. Program managers focus on outcomes rather than outputs....\nFrom productivity_books.txt: 'Deep Work' by Cal Newport advocates focus and distraction-free work. 'Atomic Habits' by James Clear covers habit formation and incremental improvement. 'Getting Things Done' by David Allen is a practical workflow system....\n\n(Answer synthesized from documents.)"
+  },
+  {
+    "role": "user",
+    "text": "recommend productivity books"
+  },
+  {
+    "role": "assistant",
+    "text": "Recommendations:\n- agile.txt\n- pm_basics.txt\n- productivity_books.txt"
+  },
+  {
+    "role": "user",
+    "text": "generate image: a red kite flying over mountains at sunset"
+  },
+  {
+    "role": "assistant",
+    "text": "Generated image saved to: outputs\\image_34657.png"
+  }
+]

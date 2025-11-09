@@ -1,0 +1,4 @@
+Agile Project Management is an iterative approach to delivering a project throughout its lifecycle.
+Iterative development, frequent reassessment, and adaptive planning are core tenants.
+Agile emphasizes collaboration, customer feedback, and small, rapid releases.
+Common frameworks include Scrum and Kanban.
